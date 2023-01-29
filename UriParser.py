@@ -10,7 +10,7 @@ class UriParser:
 
         match parsed["Path"]:  # different cases for different path's. always return -1 if address is incorrect and something goes wrong
             case "login":
-                param = UriParser.login(parsed["Parameters"], 0)
+                param = UriParser.ParseParameters(parsed["Parameters"], 0)
                 # check that parameters are right
                 if param[0] == "source" and '&' not in param[1]:
                     result = {param[0]: param[1]}
@@ -18,7 +18,7 @@ class UriParser:
                 return -1
 
             case "confirm":
-                param = UriParser.login(parsed["Parameters"], 1)
+                param = UriParser.ParseParameters(parsed["Parameters"], 1)
                 try:
                     # check that parameters are right
                     if param[0][0] == "source" and param[1][0] == "paymentnumber":
@@ -29,7 +29,7 @@ class UriParser:
                     return -1
 
             case "sign":
-                param = UriParser.login(parsed["Parameters"], 2)
+                param = UriParser.ParseParameters(parsed["Parameters"], 2)
                 try:
                     # check that parameters are right
                     if param[0][0] == "source" and param[1][0] == "documentid":
@@ -39,7 +39,8 @@ class UriParser:
                 except:
                     return -1
 
-    def login(query, i):  # parse parameters from query, i is defining which path are we using
+    # parse parameters from query, i is defining which path are we using
+    def ParseParameters(query, i):
         if i == 0:        # return -1 if parameters aren't right which means URI is incorrect
             param = query.split('=')
             if isinstance(param[1], str):
