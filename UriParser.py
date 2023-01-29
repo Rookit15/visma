@@ -14,6 +14,7 @@ class UriParser:
                 # check that parameters are right
                 if param[0] == "source" and '&' not in param[1]:
                     result = {param[0]: param[1]}
+                    # returns path and result dictionary
                     return parsed["Path"], result
                 return -1
 
@@ -24,6 +25,7 @@ class UriParser:
                     if param[0][0] == "source" and param[1][0] == "paymentnumber":
                         result = {param[0][0]: param[0]
                                   [1], param[1][0]: param[1][1]}
+                        # returns path and result dictionary
                         return parsed["Path"], result
                 except:
                     return -1
@@ -35,6 +37,7 @@ class UriParser:
                     if param[0][0] == "source" and param[1][0] == "documentid":
                         result = {param[0][0]: param[0]
                                   [1], param[1][0]: param[1][1]}
+                        # returns path and result dictionary
                         return parsed["Path"], result
                 except:
                     return -1
