@@ -10,27 +10,23 @@ class UriParser:
 
         match parsed["Path"]:  # different cases for different path's. always return -1 if address is incorrect and something goes wrong
             case "login":
-                result= UriParser.LoginParse(parsed["Parameters"])
-                if result!=-1:
+                result = UriParser.LoginParse(parsed["Parameters"])
+                if result != -1:
                     return parsed["Path"], result
                 else:
                     return -1
 
             case "confirm":
-                result= UriParser.ConfirmParse(parsed['Parameters'])
-                if result!=-1:
-                    return parsed["Path"],result
-
-        
+                result = UriParser.ConfirmParse(parsed['Parameters'])
+                if result != -1:
+                    return parsed["Path"], result
 
             case "sign":
                 result = UriParser.SignParse(parsed["Parameters"])
-                if result!=-1:
+                if result != -1:
                     return parsed["Path"], result
                 else:
-                     return -1
-               
-
+                    return -1
 
     def Split(query):
         a = query.split('&')
@@ -39,15 +35,14 @@ class UriParser:
             param.append(i.split('='))
         return param
 
-
     def LoginParse(query):
-               # return -1 if parameters aren't right which means URI is incorrect
-        param=UriParser.Split(query)
+        # return -1 if parameters aren't right which means URI is incorrect
+        param = UriParser.Split(query)
         if isinstance(param[0][1], str):
             if param[0][0] == "source" and '&' not in param[0][1]:
-                    result = {param[0][0]: param[0][1]}
-                    # returns path and result dictionary
-                    return result
+                result = {param[0][0]: param[0][1]}
+                # returns result parameters as dictionary
+                return result
             else:
                 return -1
 
@@ -56,23 +51,26 @@ class UriParser:
         try:  # payment number should be int and source should be string, return -1 if it isn't
             if isinstance(param[0][1], str) and int(param[1][1]):
                 if param[0][0] == "source" and param[1][0] == "paymentnumber":
-                    result = {param[0][0]: param[0][1], param[1][0]: param[1][1]}
-                    return result
-            else: return -1
-        except:
-            return -1
-        
-    def SignParse(query):
-        param = UriParser.Split(query)
-        try:
-            # check that parameters are right
-            if isinstance(param[0][1], str) and isinstance(param[1][1], str):
-                if param[0][0] == "source" and param[1][0] == "documentid":
-                    result = {param[0][0]: param[0][1], param[1][0]: param[1][1]}
-                    # returns path and result dictionary
+                    result = {param[0][0]: param[0]
+                              [1], param[1][0]: param[1][1]}
+                    # returns result parameters as dictionary
                     return result
             else:
                 return -1
         except:
             return -1
 
+    def SignParse(query):
+        param = UriParser.Split(query)
+        try:
+            # check that parameters are right
+            if isinstance(param[0][1], str) and isinstance(param[1][1], str):
+                if param[0][0] == "source" and param[1][0] == "documentid":
+                    result = {param[0][0]: param[0]
+                              [1], param[1][0]: param[1][1]}
+                    # returns result parameters as dictionary
+                    return result
+            else:
+                return -1
+        except:
+            return -1
